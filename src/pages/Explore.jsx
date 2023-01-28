@@ -8,6 +8,7 @@ import {
 } from '@chakra-ui/react';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { VideoCard } from '../components';
 import { SideBar } from '../layouts';
 
@@ -15,12 +16,25 @@ const smVariant = { navigation: 'drawer' };
 const mdVariant = { navigation: 'sidebar' };
 
 function Explore() {
+  const location = useLocation();
+
   const [videos, setVideos] = useState();
+  const [filteredVideos, setFilteredVideos] = useState([]);
   const variants = useBreakpointValue({ base: smVariant, md: mdVariant });
+
+  const filterVideos = (category) => {
+    category === 'All'
+      ? setFilteredVideos(videos)
+      : setFilteredVideos(videos?.filter((video) => video.category === category));
+  };
 
   useEffect(() => {
     axios.get('/api/videos').then((response) => setVideos(response.data.videos));
   }, []);
+
+  useEffect(() => {
+    filterVideos(location.state.route);
+  }, [videos]);
 
   return (
     <Flex height='100vh'>
@@ -28,6 +42,8 @@ function Explore() {
       <Container maxW='5xl'>
         <Wrap mt={4}>
           <Badge
+            cursor='pointer'
+            onClick={() => filterVideos('All')}
             variant='outline'
             px={[2, 3, 4]}
             py={[0.6, 0.8, 1]}
@@ -36,6 +52,8 @@ function Explore() {
             All
           </Badge>
           <Badge
+            onClick={() => filterVideos('Best Goals')}
+            cursor='pointer'
             variant='outline'
             px={[2, 3, 4]}
             py={[0.6, 0.8, 1]}
@@ -44,6 +62,8 @@ function Explore() {
             Best Goals
           </Badge>
           <Badge
+            cursor='pointer'
+            onClick={() => filterVideos('Best Save')}
             variant='outline'
             px={[2, 3, 4]}
             py={[0.6, 0.8, 1]}
@@ -52,6 +72,8 @@ function Explore() {
             Best Save
           </Badge>
           <Badge
+            cursor='pointer'
+            onClick={() => filterVideos('Skills')}
             variant='outline'
             px={[2, 3, 4]}
             py={[0.6, 0.8, 1]}
@@ -60,6 +82,8 @@ function Explore() {
             Skills
           </Badge>
           <Badge
+            cursor='pointer'
+            onClick={() => filterVideos('Best Freekick')}
             variant='outline'
             px={[2, 3, 4]}
             py={[0.6, 0.8, 1]}
@@ -69,7 +93,7 @@ function Explore() {
           </Badge>
         </Wrap>
         <SimpleGrid columns={[1, 2, 3]} spacing='1.5rem' mt={4}>
-          {videos?.map((video) => (
+          {filteredVideos?.map((video) => (
             <VideoCard key={video._id} {...video} />
           ))}
         </SimpleGrid>
