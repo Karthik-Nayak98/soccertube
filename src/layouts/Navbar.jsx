@@ -17,11 +17,22 @@ const mdVariant = { showSidebarButton: false };
 
 function NavBar() {
   const toggleSidebar = useSideBarUpdate();
-  const variant = useBreakpointValue({ base: smVariant, sm: mdVariant });
+  const variant = useBreakpointValue({ base: smVariant, md: mdVariant });
 
   return (
     <>
-      <Flex w='100%' justifyContent='space-between' shadow='lg' p={3} px={12}>
+      <Flex
+        style={{
+          position: 'sticky',
+          zIndex: '200',
+          top: 0,
+        }}
+        w='100%'
+        bg='white'
+        justifyContent='space-between'
+        shadow='lg'
+        p={3}
+        px={[4, 8]}>
         <Flex justifyContent='center' gap={2} alignItems='center'>
           {variant?.showSidebarButton && (
             <IconButton icon={<GiHamburgerMenu />} onClick={toggleSidebar} />

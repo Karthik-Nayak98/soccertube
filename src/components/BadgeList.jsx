@@ -16,7 +16,13 @@ function BadgeList({ filterVideos }, ref) {
   }, []);
 
   return (
-    <Wrap mt={4}>
+    <Wrap
+      mt={4}
+      w='100%'
+      bg='white'
+      pt={3}
+      pb={2}
+      style={{ zIndex: 10, position: 'sticky', top: '4em' }}>
       {categories?.map((category) => (
         <Button
           _focus={
