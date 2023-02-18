@@ -84,41 +84,45 @@ function Liked() {
     );
   }, [supabaseData]);
 
-  return (
+  return loading ? (
     <Flex>
       <SideBar variant={variants?.navigation} />
       <Container maxW='5xl' mr='2rem'>
-        {loading ? (
-          <Center h='90vh'>
-            <Spinner thickness='4px' speed='0.65s' color='blue.500' size='xl' />
-          </Center>
+        <Center h='90vh'>
+          <Spinner thickness='4px' speed='0.65s' color='blue.500' size='xl' />
+        </Center>
+      </Container>
+    </Flex>
+  ) : (
+    <Flex>
+      <SideBar variant={variants?.navigation} />
+      <Container maxW='5xl' mr='2rem'>
+        {likedVideos?.length ? (
+          <SimpleGrid columns={[1, 2, 3]} spacing='1.5rem' mt={4}>
+            {likedVideos?.map((video) => (
+              <VideoCard
+                key={video._id}
+                {...video}
+                isLiked={true}
+                handleDeleteLiked={handleDeleteLiked}
+              />
+            ))}
+          </SimpleGrid>
         ) : (
-          <>
-            {fetchError && <Text>{fetchError}</Text>}
-            {likedVideos?.length ? (
-              <SimpleGrid columns={[1, 2, 3]} spacing='1.5rem' mt={4}>
-                {likedVideos?.map((video) => (
-                  <VideoCard
-                    key={video._id}
-                    {...video}
-                    isLiked={true}
-                    handleDeleteLiked={handleDeleteLiked}
-                  />
-                ))}
-              </SimpleGrid>
-            ) : (
-              <Center h='50vh'>
-                <VStack>
-                  <Text as='p'>You do not have any videos in liked.</Text>
-                  <Link p={2} to='/explore' state={{ route: 'All' }}>
-                    <Button mt={4} size={['md']} colorScheme='blue'>
-                      Go Back
-                    </Button>
-                  </Link>
-                </VStack>
-              </Center>
-            )}
-          </>
+          <Center h='50vh'>
+            <VStack>
+              {fetchError ? (
+                <Text>{fetchError}</Text>
+              ) : (
+                <Text as='p'>You do not have any liked videos.</Text>
+              )}
+              <Link p={2} to='/explore' state={{ route: 'All' }}>
+                <Button mt={4} size={['md']} colorScheme='blue'>
+                  Go Back
+                </Button>
+              </Link>
+            </VStack>
+          </Center>
         )}
       </Container>
     </Flex>
