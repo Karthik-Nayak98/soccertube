@@ -1,5 +1,6 @@
 /* eslint-disable indent */
 import {
+  Button,
   Center,
   Container,
   Flex,
@@ -7,9 +8,11 @@ import {
   Spinner,
   Text,
   useBreakpointValue,
+  VStack,
 } from '@chakra-ui/react';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { VideoCard } from '../components';
 import { useAuth } from '../context/AuthContext';
 import { SideBar } from '../layouts';
@@ -104,7 +107,16 @@ function Liked() {
                 ))}
               </SimpleGrid>
             ) : (
-              <Text>You do not have any videos in liked.</Text>
+              <Center h='50vh'>
+                <VStack>
+                  <Text as='p'>You do not have any videos in liked.</Text>
+                  <Link p={2} to='/explore' state={{ route: 'All' }}>
+                    <Button mt={4} size={['md']} colorScheme='blue'>
+                      Go Back
+                    </Button>
+                  </Link>
+                </VStack>
+              </Center>
             )}
           </>
         )}
