@@ -12,6 +12,7 @@ import {
   Liked,
   Login,
   Playlist,
+  Profile,
   Register,
   Video,
   WatchLater,
@@ -26,6 +27,15 @@ const router = createBrowserRouter(
       <Route path='api/video/:videoId' element={<Video />} />
       <Route path='login' element={<Login />} />
       <Route path='explore' element={<Explore />} />
+
+      <Route
+        path='profile'
+        element={
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        }
+      />
       <Route
         path='liked'
         element={
