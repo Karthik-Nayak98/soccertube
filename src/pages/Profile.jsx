@@ -47,7 +47,15 @@ function Profile() {
                 </Text>
                 {user?.email}
               </Text>
-              <Button size='md' mt='4' colorScheme='blue' onClick={handleSignout}>
+              <Button
+                textTransform='uppercase'
+                fontSize='0.9rem'
+                w='250px'
+                letterSpacing='0.5px'
+                size='md'
+                mt='4'
+                colorScheme='blue'
+                onClick={handleSignout}>
                 Signout
               </Button>
             </CardBody>
