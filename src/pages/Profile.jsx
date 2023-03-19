@@ -9,7 +9,7 @@ import {
   Text,
   useBreakpointValue,
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { SideBar } from '../layouts/';
 
@@ -18,11 +18,14 @@ const mdVariant = { navigation: 'sidebar' };
 
 function Profile() {
   const variants = useBreakpointValue({ base: smVariant, md: mdVariant });
+  const [loading, setLoading] = useState(false);
 
   const { user, signOut } = useAuth();
 
   function handleSignout() {
+    setLoading(true);
     signOut();
+    setLoading(false);
   }
 
   return (
@@ -48,6 +51,7 @@ function Profile() {
                 {user?.email}
               </Text>
               <Button
+                isLoading={loading}
                 textTransform='uppercase'
                 fontSize='0.9rem'
                 w='250px'
