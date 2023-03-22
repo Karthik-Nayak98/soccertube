@@ -4,6 +4,7 @@ import Home from './Home';
 import Liked from './Liked';
 import Login from './Login';
 import Playlist from './Playlist';
+import PlaylistVideos from './PlaylistVideos';
 import Profile from './Profile';
 import Register from './Register';
 import Video from './Video';
@@ -13,6 +14,7 @@ export {
   Error,
   Profile,
   Playlist,
+  PlaylistVideos,
   WatchLater,
   Liked,
   Explore,
