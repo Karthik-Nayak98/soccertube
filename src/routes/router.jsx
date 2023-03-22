@@ -12,6 +12,7 @@ import {
   Liked,
   Login,
   Playlist,
+  PlaylistVideos,
   Profile,
   Register,
   Video,
@@ -22,7 +23,7 @@ import ProtectedRoute from './ProtectedRoute';
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<Navbar />}>
-      <Route path='/' element={<Home />} />
+      <Route index path='/' element={<Home />} />
       <Route path='register' element={<Register />} />
       <Route path='api/video/:videoId' element={<Video />} />
       <Route path='login' element={<Login />} />
@@ -52,14 +53,24 @@ const router = createBrowserRouter(
           </ProtectedRoute>
         }
       />
-      <Route
-        path='playlist'
-        element={
-          <ProtectedRoute>
-            <Playlist />
-          </ProtectedRoute>
-        }
-      />
+      <Route path='playlist'>
+        <Route
+          path=''
+          element={
+            <ProtectedRoute>
+              <Playlist />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path=':playlist'
+          element={
+            <ProtectedRoute>
+              <PlaylistVideos />
+            </ProtectedRoute>
+          }
+        />
+      </Route>
       <Route path='*' element={<Error />} />
     </Route>
   )
