@@ -28,7 +28,7 @@ function SideBar({ variant }) {
       </DrawerContent>
     </Drawer>
   ) : (
-    <Box m={5} style={{ position: 'fixed', top: '3.1rem' }}>
+    <Box m={5} minWidth='9rem' style={{ height: '100vh' }}>
       <Menu />
     </Box>
   );
