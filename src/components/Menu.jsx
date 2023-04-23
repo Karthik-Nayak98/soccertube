@@ -6,14 +6,9 @@ import { menuItems } from '../backend/db/menuItems';
 
 function Menu() {
   return (
-    <List fontSize={18}>
+    <List marginTop={5} style={{ position: 'fixed', top: '3.1rem' }} fontSize={18}>
       {menuItems.map((item) => (
-        <MenuItem
-          key={item._id}
-          url={item.url}
-          title={item.title}
-          icon={item.icon}
-        />
+        <MenuItem key={item._id} {...item} />
       ))}
     </List>
   );
