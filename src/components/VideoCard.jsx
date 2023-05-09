@@ -11,12 +11,27 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { PropTypes } from 'prop-types';
+import { useState } from 'react';
 import { AiFillEye } from 'react-icons/ai';
 import { HiOutlineDotsVertical } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
 import { displayViews, formatDate } from '../utils/helper';
+import KebabMenu from './KebabMenu';
 
-function VideoCard({ creator, _id, title, thumbnail, views, createdAt }) {
+function VideoCard({
+  creator,
+  _id,
+  title,
+  thumbnail,
+  views,
+  createdAt,
+  handleDeleteLiked,
+  onDelete,
+  isLiked = false,
+  isWatchLater = false,
+}) {
+  const [showKebabMenu, setShowKebabMenu] = useState(false);
+
   return (
     <Card variant='outline'>
       <CardBody p={2}>
@@ -37,7 +52,21 @@ function VideoCard({ creator, _id, title, thumbnail, views, createdAt }) {
               {title}
             </Text>
           </HStack>
-          <HiOutlineDotsVertical size='1.2rem' />
+          {showKebabMenu ? (
+            <KebabMenu
+              isLiked={isLiked}
+              isWatchLater={isWatchLater}
+              video_id={_id}
+              showKebabMenu={setShowKebabMenu}
+              handleDeleteLiked={handleDeleteLiked}
+              onDelete={onDelete}
+            />
+          ) : null}
+          <HiOutlineDotsVertical
+            size='1.2rem'
+            cursor='pointer'
+            onClick={() => setShowKebabMenu(true)}
+          />
         </Flex>
         <Stack color='gray.600' fontSize='small' mt={2} spacing={0} px={2}>
           <Text fontWeight={400}>{creator}</Text>
@@ -62,5 +91,9 @@ VideoCard.propTypes = {
   thumbnail: PropTypes.string.isRequired,
   views: PropTypes.number.isRequired,
   createdAt: PropTypes.string.isRequired,
+  onDelete: PropTypes.func,
+  handleDeleteLiked: PropTypes.func,
+  isLiked: PropTypes.bool,
+  isWatchLater: PropTypes.bool,
 };
 export default VideoCard;
