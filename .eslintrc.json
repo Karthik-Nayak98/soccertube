@@ -20,6 +20,9 @@
     ],
     "rules": {
         "react/react-in-jsx-scope": "off",
+        "react/display-name": [
+            2
+        ],
         "react/prop-types": 2,
         "indent": [
             "error",
