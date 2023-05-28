@@ -1,7 +1,7 @@
 import Error from './Error';
 import Explore from './Explore';
 import Home from './Home';
-import Liked from './Liked';
+import LikedHOC from './Liked';
 import Login from './Login';
 import Playlist from './Playlist';
 import PlaylistVideos from './PlaylistVideos';
@@ -16,7 +16,7 @@ export {
   Playlist,
   PlaylistVideos,
   WatchLater,
-  Liked,
+  LikedHOC,
   Explore,
   Video,
   Register,
