@@ -27,8 +27,10 @@ function VideoCard({
   createdAt,
   handleDeleteLiked,
   onDelete,
+  playlist_id,
   isLiked = false,
   isWatchLater = false,
+  inPlaylist = false,
 }) {
   const [showKebabMenu, setShowKebabMenu] = useState(false);
 
@@ -56,6 +58,8 @@ function VideoCard({
             <KebabMenu
               isLiked={isLiked}
               isWatchLater={isWatchLater}
+              inPlaylist={inPlaylist}
+              playlist_id={playlist_id}
               video_id={_id}
               showKebabMenu={setShowKebabMenu}
               handleDeleteLiked={handleDeleteLiked}
@@ -91,9 +95,11 @@ VideoCard.propTypes = {
   thumbnail: PropTypes.string.isRequired,
   views: PropTypes.number.isRequired,
   createdAt: PropTypes.string.isRequired,
+  playlist_id: PropTypes.number,
   onDelete: PropTypes.func,
   handleDeleteLiked: PropTypes.func,
   isLiked: PropTypes.bool,
   isWatchLater: PropTypes.bool,
+  inPlaylist: PropTypes.bool,
 };
 export default VideoCard;
