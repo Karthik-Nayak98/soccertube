@@ -36,7 +36,6 @@ function Login() {
     const { error } = await loginWithEmail(guestEmail, guestPassword);
     setErrorMsg(error.message);
     setGuestLoading(true);
-    // error.message ? setErrorMsg(error.message) : navigate('/');
   }
 
   async function handleLogin(event) {
