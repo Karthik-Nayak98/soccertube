@@ -1,5 +1,5 @@
 import {
-  Box,
+  Avatar,
   Button,
   Flex,
   IconButton,
@@ -10,6 +10,7 @@ import React from 'react';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { Link, NavLink, Outlet } from 'react-router-dom';
 import soccer from '../assets/soccer.svg';
+import { useAuth } from '../context/AuthContext';
 import { useSideBarUpdate } from '../context/SidebarContext';
 
 const smVariant = { showSidebarButton: true };
@@ -18,6 +19,7 @@ const mdVariant = { showSidebarButton: false };
 function NavBar() {
   const toggleSidebar = useSideBarUpdate();
   const variant = useBreakpointValue({ base: smVariant, md: mdVariant });
+  const { user } = useAuth();
 
   return (
     <>
@@ -41,11 +43,17 @@ function NavBar() {
             <Image boxSize={7} src={soccer} alt='logo' />
           </Link>
         </Flex>
-        <Box>
-          <NavLink to='/login'>
-            <Button colorScheme='blue'>Login</Button>
-          </NavLink>
-        </Box>
+        <Flex justifyContent='center' alignItems='center'>
+          {!user ? (
+            <NavLink to='/login'>
+              <Button colorScheme='blue'>Login</Button>
+            </NavLink>
+          ) : (
+            <NavLink to='/profile'>
+              <Avatar cursor='pointer' size='sm' name={user?.user_metadata.name} />
+            </NavLink>
+          )}
+        </Flex>
       </Flex>
       <Outlet />
     </>
