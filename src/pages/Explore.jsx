@@ -2,8 +2,7 @@ import { Container, Flex, SimpleGrid, useBreakpointValue } from '@chakra-ui/reac
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { BadgeList, VideoCard } from '../components';
-// import BadgeList from '../components/BadgeList';
+import { BadgeList, SpinnerContainer, VideoCard } from '../components';
 import { SideBar } from '../layouts';
 
 const smVariant = { navigation: 'drawer' };
@@ -16,6 +15,7 @@ function Explore() {
   const category = useRef('All');
   const [filteredVideos, setFilteredVideos] = useState([]);
   const variants = useBreakpointValue({ base: smVariant, md: mdVariant });
+  const [loading, setLoading] = useState(false);
 
   const filterVideos = (category) => {
     category === 'All'
@@ -24,18 +24,24 @@ function Explore() {
   };
 
   useEffect(() => {
+    setLoading(true);
     category.current = location.state.route;
     axios.get('/api/videos').then((response) => setVideos(response.data.videos));
+    setLoading(false);
   }, []);
 
   useEffect(() => {
+    setLoading(true);
     filterVideos(category.current);
+    setLoading(false);
   }, [videos]);
 
+  if (loading) return <SpinnerContainer />;
+
   return (
-    <Flex height='100vh'>
+    <Flex>
       <SideBar variant={variants?.navigation} />
-      <Container maxW='5xl'>
+      <Container maxW='5xl' mr='2rem'>
         <BadgeList ref={category} filterVideos={filterVideos} />
         <SimpleGrid columns={[1, 2, 3]} spacing='1.5rem' mt={4}>
           {filteredVideos?.map((video) => (
