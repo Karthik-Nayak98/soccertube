@@ -1,6 +1,7 @@
-import { Box, HStack, Text } from '@chakra-ui/react';
+import { Box, HStack, Text, useDisclosure, useOutsideClick } from '@chakra-ui/react';
 import { PropTypes } from 'prop-types';
-import React, { forwardRef } from 'react';
+import React, { useRef } from 'react';
+import { useErrorBoundary } from 'react-error-boundary';
 import {
   MdDeleteForever,
   MdOutlineWatchLater,
@@ -9,13 +10,16 @@ import {
 import { useAuth } from '../context/AuthContext';
 import useCustomToast from '../hooks/useCustomToast';
 import supabase from '../supabase/client';
+import PlaylistModal from './PlaylistModal';
 
-function KebabMenu(props, ref) {
+function KebabMenu(props) {
   const toast = useCustomToast();
+  const { isOpen, onClose, onOpen } = useDisclosure();
   const { user } = useAuth();
+  const { showBoundary } = useErrorBoundary();
 
-  const handlePlaylist = () => {};
-
+  const ref = useRef();
+  useOutsideClick({ ref: ref, handler: () => props.showKebabMenu(false) });
   const handleInsertTable = async (id, table = 'watchlater') => {
     const { data, error } = await supabase
       .from(table)
@@ -24,7 +28,7 @@ function KebabMenu(props, ref) {
       .eq('video_id', id);
 
     if (error) {
-      console.log(error);
+      showBoundary(error);
     }
 
     const insertData = data.length
@@ -54,7 +58,13 @@ function KebabMenu(props, ref) {
       shadow='lg'
       bg='white'>
       {props.isWatchLater ? (
-        <HStack cursor='pointer' onClick={() => props.onDelete(props.video_id)}>
+        <HStack
+          cursor='pointer'
+          _hover={{
+            background: 'white',
+            color: 'red.400',
+          }}
+          onClick={() => props.onDelete(props.video_id)}>
           <MdDeleteForever />
           <Text>Remove from Watch later</Text>
         </HStack>
@@ -64,10 +74,29 @@ function KebabMenu(props, ref) {
           <Text>Save to Watch later</Text>
         </HStack>
       )}
-      <HStack cursor='pointer' onClick={handlePlaylist}>
-        <MdOutlineWatchLater />
-        <Text>Save to playlist</Text>
-      </HStack>
+      {props.inPlaylist ? (
+        <HStack
+          cursor='pointer'
+          _hover={{
+            background: 'white',
+            color: 'red.400',
+          }}
+          onClick={() => props.onDelete(props.playlist_id, props.video_id)}>
+          <MdDeleteForever />
+          <Text>Remove from Playlist</Text>
+        </HStack>
+      ) : (
+        <HStack cursor='pointer' onClick={onOpen}>
+          <PlaylistModal
+            ref={ref}
+            isOpen={isOpen}
+            onClose={onClose}
+            video_id={props.video_id}
+          />
+          <MdOutlineWatchLater />
+          <Text>Save to playlist</Text>
+        </HStack>
+      )}
       {props.isLiked ? (
         <HStack
           cursor='pointer'
@@ -84,14 +113,14 @@ function KebabMenu(props, ref) {
   );
 }
 
-const ForwardKebabMenu = forwardRef(KebabMenu);
-
+export default KebabMenu;
 KebabMenu.propTypes = {
   isLiked: PropTypes.bool,
   isWatchLater: PropTypes.bool,
+  inPlaylist: PropTypes.bool,
+  playlist_id: PropTypes.number,
   video_id: PropTypes.string.isRequired,
-  handleDeleteLiked: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired,
+  showKebabMenu: PropTypes.func.isRequired,
+  handleDeleteLiked: PropTypes.func,
+  onDelete: PropTypes.func,
 };
-
-export default ForwardKebabMenu;
