@@ -16,22 +16,28 @@ function SideBar({ variant }) {
   const isSidebarOpen = useSideBar();
   const toggleSidebar = useSideBarUpdate();
 
-  return variant == 'drawer' ? (
-    <Drawer isOpen={isSidebarOpen} placement='left' onClose={toggleSidebar}>
-      <DrawerOverlay />
-      <DrawerContent>
-        <DrawerCloseButton />
-        <DrawerHeader>Soccer Tube</DrawerHeader>
-        <DrawerBody>
-          <Menu />
-        </DrawerBody>
-      </DrawerContent>
-    </Drawer>
-  ) : (
-    <Box m={5} minWidth='9rem' style={{ height: '100vh' }}>
-      <Menu />
-    </Box>
-  );
+  if (variant === 'drawer') {
+    return (
+      <Drawer isOpen={isSidebarOpen} placement='left' onClose={toggleSidebar}>
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerCloseButton />
+          <DrawerHeader>Soccer Tube</DrawerHeader>
+          <DrawerBody>
+            <Menu />
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
+    );
+  } else if (variant === 'sidebar') {
+    return (
+      <Box m={5} minWidth='9rem' style={{ height: '100vh' }}>
+        <Menu />
+      </Box>
+    );
+  } else {
+    return <></>;
+  }
 }
 
 SideBar.propTypes = {
